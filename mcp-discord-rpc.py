@@ -2,19 +2,22 @@ from pypresence import Presence
 import time
 import urllib.request, json
 
-client_id = '833541435281375273'  # Fake ID, put your real one here
-RPC = Presence(client_id, pipe=0)  # Initialize the client class
-RPC.connect() # Start the handshake loop
+client_id = '833541435281375273'
+RPC = Presence(client_id, pipe=0)
+RPC.connect()
 
 prevGameName = json.loads(urllib.request.urlopen("http://192.168.0.31/api/currentState").read().decode())['gameName']
+prevGameID = json.loads(urllib.request.urlopen("http://192.168.0.31/api/currentState").read().decode())['gameID'].lower()
 starttime = time.time()
-print(RPC.update(details=prevGameName, start=starttime))  # Set the presence
+print(RPC.update(details=prevGameName, start=starttime, large_image=prevGameID))
 
-while True:  # The presence will stay on as long as the program is running
-    time.sleep(5) # Can only update rich presence every 5 seconds
+while True:
+    time.sleep(5)
     curGameName = json.loads(urllib.request.urlopen("http://192.168.0.31/api/currentState").read().decode())['gameName']
+    curGameID = json.loads(urllib.request.urlopen("http://192.168.0.31/api/currentState").read().decode())['gameID'].lower()
     if prevGameName != curGameName:
         prevGameName = curGameName
+        prevGameID = curGameID
         starttime = time.time()
-        print(RPC.update(details=prevGameName, start=starttime))
+        print(RPC.update(details=prevGameName, start=starttime, large_image=prevGameID))
 
