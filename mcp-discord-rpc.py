@@ -4,7 +4,7 @@ import urllib.request, json
 import configparser
 
 configParser = configparser.ConfigParser()
-configParser.read(os.getcwd() + "\\config.txt")
+configParser.read(os.getcwd() + "//config.txt")
 addr = "http://" + configParser.get('config', 'mcp_local_ip') + "/api/currentState"
 client_id = '833541435281375273'
 RPC = Presence(client_id, pipe=0)
