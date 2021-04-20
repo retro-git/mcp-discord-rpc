@@ -1,6 +1,6 @@
 [config]
 ;Memcard Pro Local IP
-mcp_local_ip = 192.168.0.118
+mcp_local_ip = memcardpro.local
 
 ;Discord API application ID
 client_id = 833541435281375273
