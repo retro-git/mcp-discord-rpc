@@ -6,21 +6,39 @@ import configparser
 configParser = configparser.ConfigParser()
 configParser.read(os.getcwd() + "//config.txt")
 addr = "http://" + configParser.get('config', 'mcp_local_ip') + "/api/currentState"
-client_id = '833541435281375273'
+client_id = configParser.get('config', 'client_id')
+refresh_delay = int(configParser.get('config', 'refresh_delay'))
+wait_on_fail = int(configParser.get('config', 'wait_on_fail'))
+default_image = configParser.get('config', 'default_image')
 RPC = Presence(client_id, pipe=0)
 RPC.connect()
 
-prevGameName = json.loads(urllib.request.urlopen(addr).read().decode())['gameName']
-prevGameID = json.loads(urllib.request.urlopen(addr).read().decode())['gameID'].lower()
-starttime = time.time()
-print(RPC.update(details=prevGameName, start=starttime, large_image=prevGameID))
-
 while True:
-    time.sleep(5)
-    curGameName = json.loads(urllib.request.urlopen(addr).read().decode())['gameName']
-    if prevGameName != curGameName:
-        prevGameName = curGameName
-        prevGameID = json.loads(urllib.request.urlopen(addr).read().decode())['gameID'].lower()
+    try:
+        prevGameData = json.loads(urllib.request.urlopen(addr).read().decode())
+        prevGameName = prevGameData['gameName']
+        prevGameID = prevGameData['gameID'].lower()
         starttime = time.time()
-        print(RPC.update(details=prevGameName, start=starttime, large_image=prevGameID))
+        status = RPC.update(details=prevGameName, start=starttime, large_image=prevGameID)
+        if not status['data']['assets']:
+            status = RPC.update(details=prevGameName, start=starttime, large_image=default_image)
+
+        print(status)
+
+        while True:
+            time.sleep(refresh_delay)
+            curGameData = json.loads(urllib.request.urlopen(addr).read().decode())
+            curGameName = curGameData['gameName']
+            if prevGameName != curGameName:
+                prevGameName = curGameName
+                prevGameID = curGameData['gameID'].lower()
+                starttime = time.time()
+                status = RPC.update(details=prevGameName, start=starttime, large_image=prevGameID)
+                if not status['data']['assets']:
+                    status = RPC.update(details=prevGameName, start=starttime, large_image=default_image)
+
+                print(status)
+    except:
+        print('Connection failed, trying again in ' + str(wait_on_fail/60) + ' minutes');
+        time.sleep(wait_on_fail)
 
