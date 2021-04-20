@@ -1,2 +1,15 @@
 [config]
-mcp_local_ip = memcardpro.local
+;Memcard Pro Local IP
+mcp_local_ip = 192.168.0.118
+
+;Discord API application ID
+client_id = 833541435281375273
+
+;How often to check for game updates (seconds)
+refresh_delay = 5
+
+;How long to wait before reattempting when MCP does not respond
+wait_on_fail = 300
+
+;image to use when no cover found
+default_image = ps1logo
