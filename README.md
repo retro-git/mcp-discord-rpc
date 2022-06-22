@@ -1,6 +1,6 @@
 # Description
 
-The MemCard PRO, in conjunction with the XStation ODE mod, is able to detect which game is currently running on your PlayStation 1. This simple python script takes that information and incorporates it with Discord Rich Presence to display the PS1 game you're currently playing on Discord.
+The MemCard PRO, in conjunction with the XStation ODE mod, is able to detect which game is currently running on your PlayStation 1. This simple python script displays this information via Discord Rich Presence.
 
 ![example](https://github.com/psyfl/mcp-discord-rpc/blob/main/example.png?raw=true)
 
