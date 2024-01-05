@@ -4,8 +4,8 @@ system = ps2
 
 ;Memcard Pro Local IP
 mcp_ps1_local_ip = 000.000.0.000
-mcp_ps2_local_ip = 192.168.0.109
-mcp_gcn_local_ip = 192.168.0.85
+mcp_ps2_local_ip = 000.000.0.000
+mcp_gcn_local_ip = 000.000.0.000
 
 ;Discord API application ID
 client_id = 0000000000000000000
